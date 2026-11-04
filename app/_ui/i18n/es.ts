@@ -77,7 +77,7 @@ export const es: Messages = {
   },
 
   disclaimer:
-    "Una proyección simplificada: la rentabilidad se toma como constante y no se incluyen comisiones ni impuestos. No es asesoramiento financiero.",
+    "Una proyección simplificada, no una previsión: la rentabilidad se toma como constante y no se incluyen comisiones ni impuestos. Esta herramienta no es asesoramiento financiero ni recomienda ninguna inversión; solo dibuja los números que escribes.",
 
   footer: { madeBy: "Hecho por César Peón", company: "1to1 Digital Solutions", links: "Enlaces del autor" },
 };

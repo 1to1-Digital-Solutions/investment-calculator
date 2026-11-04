@@ -79,7 +79,7 @@ export const en = {
   },
 
   disclaimer:
-    "A simplified projection: the return is taken as constant and no fees or taxes are included. Not financial advice.",
+    "A simplified projection, not a forecast: the return is taken as constant, and no fees or taxes are included. This tool is not financial advice and does not recommend any investment; it only draws the numbers you type.",
 
   footer: { madeBy: "Made by César Peón", company: "1to1 Digital Solutions", links: "Author links" },
 };

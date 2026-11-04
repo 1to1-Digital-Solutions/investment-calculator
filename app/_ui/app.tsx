@@ -108,6 +108,7 @@ export function App() {
         </header>
 
         <PlanForm calculated={scenario.params} showing={showing} onCalculate={calculate} />
+        <p className={`text-xs ${muted}`}>{t.disclaimer}</p>
 
         {showing && (
           <div ref={results} key={run} className="flex scroll-mt-4 flex-col gap-5">
@@ -124,7 +125,6 @@ export function App() {
                 {notice}
               </p>
             </div>
-            <p className={`text-xs ${muted}`}>{t.disclaimer}</p>
           </div>
         )}
       </main>
