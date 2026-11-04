@@ -3,7 +3,8 @@
 **What it is:** a single-page calculator of compound interest against inflation. Initial capital,
 monthly contribution, annual return and years in; on "Calculate", a summary and three charts
 (growth, with a year-by-year table inside; against inflation; real result) draw themselves below
-the form. See `README.md` for the feature list and how the numbers are made.
+the form, and a years slider pinned to the bottom moves them live. `/legal` is the legal notice.
+See `README.md` for the feature list and how the numbers are made.
 
 **Local context:** `ESTADO.md` carries the current state, what is pending and the operational
 decisions, in Spanish. Read it first.
@@ -19,7 +20,9 @@ and the numbers never leave the browser (the scenario lives in the URL; language
   (Intl formatting, CSV). Tested at 100 %.
 - `app/` is the wrapper: `_ui/url-params.ts` keeps the *calculated* scenario in the URL,
   `_ui/scenario.ts` derives the rows from it, `_ui/form.tsx` holds the edits until "Calculate",
-  `_ui/summary.tsx`, `_ui/charts.tsx` and `_ui/table.tsx` show the results. No maths go there. Every interface text lives in `_ui/i18n/en.ts` and
+  `_ui/years-bar.tsx` writes the years straight to the URL, `_ui/summary.tsx`, `_ui/charts.tsx`
+  and `_ui/table.tsx` show the results; `_ui/legal.tsx` is the notice, with the publisher's
+  identity in `PUBLISHER`. No maths go there. Every interface text lives in `_ui/i18n/en.ts` and
   `es.ts` (same shape, checked by TypeScript).
 
 **Run and check:** `pnpm dev` (http://127.0.0.1:3500). Gates: `pnpm typecheck && pnpm lint &&
@@ -34,6 +37,8 @@ pnpm coverage && pnpm build`, all green before finishing. Kill the dev server by
 - **The default inflation is a dated figure** (`INFLATION_DEFAULT` in `params.ts`): update value
   and period together.
 - **Nothing remote at runtime** (fonts, analytics, calls): the CSP in `lib/headers.ts` forbids it.
+  The legal notice promises exactly that (no cookies, nothing sent); adding analytics or any
+  third party means rewriting it first.
 
 **Conventions:** everything in English (code, comments, UI, docs, commits); `ESTADO.md` in
 Spanish. Conventional Commits, one logical change per commit, no temporal references in

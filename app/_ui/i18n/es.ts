@@ -15,6 +15,7 @@ export const es: Messages = {
     inflationHint: (value, period, source) =>
       `Por defecto: ${value}, el IPC de España de ${period} (${source}). Cámbialo si prefieres otra cifra.`,
     years: "Años",
+    yearsBelow: "Los años están en la barra de abajo: muévela y los gráficos la siguen.",
     euro: "€",
     percent: "%",
     calculate: "Calcular",
@@ -79,5 +80,46 @@ export const es: Messages = {
   disclaimer:
     "Una proyección simplificada, no una previsión: la rentabilidad se toma como constante y no se incluyen comisiones ni impuestos. Esta herramienta no es asesoramiento financiero ni recomienda ninguna inversión; solo dibuja los números que escribes.",
 
-  footer: { madeBy: "Hecho por César Peón", company: "1to1 Digital Solutions", links: "Enlaces del autor" },
+  footer: { madeBy: "Hecho por César Peón", company: "1to1 Digital Solutions", links: "Enlaces del autor", legal: "Aviso legal" },
+
+  legal: {
+    title: "Aviso legal",
+    back: "← Volver a la calculadora",
+    identity: (p) => [
+      ["Titular", p.name],
+      ["NIF", p.taxId],
+      ["Domicilio", p.address],
+      ["Correo", p.email],
+      ["Web", p.site],
+    ],
+    sections: [
+      {
+        title: "Qué es esta herramienta",
+        body: [
+          "Una calculadora que dibuja cómo crecería una cantidad de dinero a una rentabilidad anual constante, con aportaciones mensuales, y cuánto le quitaría la inflación. Es una proyección simplificada, sin comisiones, sin impuestos y con una rentabilidad que nunca cambia: las inversiones reales no se comportan así.",
+          "No es asesoramiento financiero ni recomienda ningún producto, entidad o inversión. No sabe quién eres ni adapta nada a tu situación. Cualquier decisión que tomes es tuya; el titular no garantiza la exactitud de las cifras ni responde del uso que se haga de ellas.",
+        ],
+      },
+      {
+        title: "Tus datos",
+        body: [
+          "La calculadora funciona por completo en tu navegador. Los números que escribes no se envían a ningún sitio: no hay servidor nuestro, ni cuenta, ni formulario que mande nada, ni analítica.",
+          "La página la sirve un proveedor de alojamiento (Vercel Inc.) que, como cualquier servidor web, procesa la dirección IP de cada petición en sus registros de acceso por seguridad y operación. No usamos esos registros para identificar a nadie.",
+          "El idioma y el tema que eliges se guardan en el almacenamiento local de tu navegador para que la página los recuerde. No se guarda nada más ni se lee nada de tu dispositivo. Puedes borrarlos desde el navegador cuando quieras.",
+        ],
+      },
+      {
+        title: "Cookies",
+        body: [
+          "Este sitio no instala cookies. Las dos preferencias anteriores se guardan porque las has elegido tú, lo que la guía de cookies de la AEPD exime de consentimiento, así que no hay banner de cookies.",
+        ],
+      },
+      {
+        title: "Propiedad intelectual y ley aplicable",
+        body: [
+          "El diseño, los textos y el código de esta herramienta son del titular. Puedes usar la calculadora libremente y compartir enlaces a tus escenarios. Se aplica la legislación española.",
+        ],
+      },
+    ],
+  },
 };

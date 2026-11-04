@@ -48,10 +48,19 @@ function useAnimated(): boolean {
   );
 }
 
-/** How each series draws itself: a second, easing out, one after the other. */
-function useMotion() {
-  const animated = useAnimated();
+/**
+ * How each series draws itself when the chart appears: a second, easing out, one after the
+ * other. Off once drawn (`animate` false), so the years slider moves the charts at once.
+ */
+function useMotion(animate: boolean) {
+  const animated = useAnimated() && animate;
   return (order = 0) => ({ isAnimationActive: animated, animationDuration: 1000, animationBegin: order * 250, animationEasing: "ease-out" as const });
+}
+
+interface ChartProps {
+  rows: YearRow[];
+  /** Whether the series should draw themselves; false once they have. */
+  animate: boolean;
 }
 
 function useAxes(locale: Locale) {
@@ -79,11 +88,11 @@ function Panel({ title, about, action, note, children }: { title: string; about:
 }
 
 /** What was put in and what it earned, stacked: the green wedge is compound interest. The same figures as a table on request. */
-export function GrowthChart({ rows }: { rows: YearRow[] }) {
+export function GrowthChart({ rows, animate }: ChartProps) {
   const t = useMessages();
   const locale = useLocale();
   const f = useAxes(locale);
-  const motion = useMotion();
+  const motion = useMotion(animate);
   const [view, setView] = useState<"chart" | "table">("chart");
   const other = view === "chart" ? "table" : "chart";
   return (
@@ -118,11 +127,11 @@ export function GrowthChart({ rows }: { rows: YearRow[] }) {
 }
 
 /** The balance against what it buys today; the shaded gap between the two lines is what inflation eats. */
-export function InflationChart({ rows }: { rows: YearRow[] }) {
+export function InflationChart({ rows, animate }: ChartProps) {
   const t = useMessages();
   const locale = useLocale();
   const f = useAxes(locale);
-  const motion = useMotion();
+  const motion = useMotion(animate);
   return (
     <Panel title={t.charts.inflation.title} about={t.charts.inflation.about}>
       <div style={{ height: HEIGHT }}>
@@ -144,11 +153,11 @@ export function InflationChart({ rows }: { rows: YearRow[] }) {
 }
 
 /** The end of the road in three bars, with what inflation took written underneath. */
-export function OutcomeChart({ rows }: { rows: YearRow[] }) {
+export function OutcomeChart({ rows, animate }: ChartProps) {
   const t = useMessages();
   const locale = useLocale();
   const f = useAxes(locale);
-  const motion = useMotion();
+  const motion = useMotion(animate);
   const last = outcome(rows);
   const bars = [
     { name: t.charts.outcome.contributed, value: last.contributed, fill: "var(--chart-contributed)" },

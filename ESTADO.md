@@ -6,8 +6,9 @@
 
 - Calculadora de inversión: capital inicial, aportación mensual, rentabilidad, inflación y años;
   al pulsar «Calcular» aparecen debajo del formulario, animados, el resumen y tres gráficos
-  (crecimiento con tabla año a año dentro y CSV, frente a la inflación, resultado real). Enlace
-  compartible, ES/EN, claro/oscuro.
+  (crecimiento con tabla año a año dentro y CSV, frente a la inflación, resultado real); los años
+  se mueven desde una barra fija abajo y los gráficos la siguen en vivo. Enlace compartible,
+  ES/EN, claro/oscuro, aviso legal en `/legal`.
 - **Repo privado:** https://github.com/1to1-Digital-Solutions/investment-calculator
 - **Producción:** https://inversion-calculadora.vercel.app (proyecto `investment-calculator` del equipo
   `1to1-digital-solutions`; `investment-calculator.vercel.app` y `calculadora-inversion.vercel.app` los
@@ -19,10 +20,11 @@
 
 ## ⏭️ Siguiente paso
 
-Segunda vuelta (simplificación pedida por César el 4/11/2026) hecha y verificada en local
-(escritorio y móvil, claro y oscuro): sin modo objetivo, formulario arriba y resultados al pulsar
-«Calcular», tabla dentro de «Crecimiento», inflación en dos líneas con la brecha sombreada,
-relleno translúcido. Commiteada y publicada el mismo día.
+Tercera vuelta (4/11/2026): barra fija de años que mueve los gráficos en vivo, aviso siempre
+visible bajo el formulario y página `/legal` enlazada en el pie, con la identidad de la empresa
+sacada de la política de privacidad de la landing. **Falta en `/legal` el dato del Registro
+Mercantil** (tomo, folio, hoja): el art. 10 de la LSSI lo pide; añadirlo en `PUBLISHER` y en
+`legal.identity` cuando César lo pase. Verificada en local; publicar tras el visto bueno.
 
 Ideas que quedaron fuera a propósito (v1 simple): modo «¿cuándo llego a X?» (se quitó en la
 segunda vuelta), comisiones anuales, impuestos sobre la ganancia, aportación que crece cada año,
@@ -66,6 +68,11 @@ con un script suelto (viewport iPhone 13, claro y oscuro).
 - **Los gráficos se dibujan al aparecer** (Recharts anima cada serie, escalonadas, y cada bloque
   sube con `animate-rise`); cada «Calcular» remonta los resultados para repetirlo. Con
   `prefers-reduced-motion`, nada se mueve.
+- **Sin banner de cookies a propósito**: no hay cookies ni analítica, y la guía de cookies de la
+  AEPD (2023, apdo. 2.1.2 b) exime de consentimiento las preferencias que elige el propio usuario
+  (idioma, contraste). Si algún día entra analítica, hay que rehacer `/legal` y poner banner.
+- **La animación solo al aparecer**: `Results` pasa `animate=false` a los gráficos dos segundos
+  después de montarse, para que la barra de años los mueva sin retardo.
 - **La leyenda de Recharts ordena por nombre** por defecto; en «Frente a la inflación» va
   `itemSorter="dataKey"` para que «Saldo» salga primero, como en el texto.
 - **Los campos numéricos** guardan el texto mientras se escribe y el número aparte: un

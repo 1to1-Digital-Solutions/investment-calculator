@@ -11,6 +11,8 @@ never leave the page, and a scenario can be shared because it lives in the URL.
 
 - **The form first, the results on demand.** Nothing moves while a number is half typed: the
   charts appear, one after the other, when *Calculate* is pressed, and again on *Recalculate*.
+- **The years follow a slider pinned to the bottom** once there are results: move it from
+  anywhere on the page and every chart redraws at once.
 - **Growth**: what was put in and what the investment earned, stacked by year. The green wedge
   that widens every year is compound interest. The same figures as a year-by-year table, with a
   switch inside the chart, downloadable as CSV.
@@ -23,6 +25,8 @@ never leave the page, and a scenario can be shared because it lives in the URL.
 - **Share a scenario**: the parameters are in the URL, so copying the link copies the plan.
 - **English or Spanish interface** and **light or dark theme**, following the browser until you
   pick one. Both choices are remembered.
+- **A legal notice** (`/legal`): who publishes the tool, that it is not advice, and what it does
+  with your data (nothing leaves the browser; no cookies).
 
 ## How the numbers are made
 

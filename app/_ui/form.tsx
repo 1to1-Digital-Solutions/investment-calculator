@@ -11,7 +11,7 @@ import { card, label as labelClass, primaryButton } from "./styles";
 interface Props {
   /** The last calculated scenario; what the fields show until they are edited. */
   calculated: Params;
-  /** Whether results are on screen, to label the button as a recalculation. */
+  /** Whether results are on screen: then the years live in the bar at the bottom, not here. */
   showing: boolean;
   onCalculate: (params: Params) => void;
 }
@@ -57,26 +57,30 @@ export function PlanForm({ calculated, showing, onCalculate }: Props) {
       </fieldset>
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
-        <div className="flex flex-1 flex-col gap-1">
-          <div className="flex items-baseline justify-between">
-            <label htmlFor={yearsId} className={labelClass}>
-              {t.form.years}
-            </label>
-            <output htmlFor={yearsId} className="text-lg font-semibold tabular-nums">
-              {params.years}
-            </output>
+        {showing ? (
+          <p className="flex-1 text-sm text-muted">{t.form.yearsBelow}</p>
+        ) : (
+          <div className="flex flex-1 flex-col gap-1">
+            <div className="flex items-baseline justify-between">
+              <label htmlFor={yearsId} className={labelClass}>
+                {t.form.years}
+              </label>
+              <output htmlFor={yearsId} className="text-lg font-semibold tabular-nums">
+                {params.years}
+              </output>
+            </div>
+            <input
+              id={yearsId}
+              type="range"
+              className="min-h-11 w-full pointer-fine:min-h-8"
+              min={BOUNDS.years.min}
+              max={BOUNDS.years.max}
+              step={1}
+              value={params.years}
+              onChange={(event) => set("years", Number(event.target.value))}
+            />
           </div>
-          <input
-            id={yearsId}
-            type="range"
-            className="min-h-11 w-full pointer-fine:min-h-8"
-            min={BOUNDS.years.min}
-            max={BOUNDS.years.max}
-            step={1}
-            value={params.years}
-            onChange={(event) => set("years", Number(event.target.value))}
-          />
-        </div>
+        )}
         <button type="submit" className={`${primaryButton} sm:w-auto`}>
           {showing ? t.form.recalculate : t.form.calculate}
         </button>
