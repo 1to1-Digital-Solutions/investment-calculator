@@ -132,14 +132,14 @@ input[type="range"] {
 .slider::-webkit-slider-runnable-track {
   height: 6px;
   border-radius: 999px;
-  background: var(--raised);
-  border: 1px solid var(--border);
+  background: var(--surface);
+  border: 1px solid var(--field-border);
 }
 .slider::-moz-range-track {
   height: 6px;
   border-radius: 999px;
-  background: var(--raised);
-  border: 1px solid var(--border);
+  background: var(--surface);
+  border: 1px solid var(--field-border);
 }
 .slider::-webkit-slider-thumb {
   appearance: none;

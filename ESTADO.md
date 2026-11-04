@@ -7,7 +7,7 @@
 - Calculadora de inversión: capital inicial, aportación mensual, rentabilidad, inflación y años;
   al pulsar «Calcular» aparecen debajo del formulario, animados, el resumen y tres gráficos
   (crecimiento con tabla año a año dentro y CSV, frente a la inflación, invertir o no en dinero de
-  hoy); los años se mueven desde una píldora flotante abajo y los gráficos la siguen en vivo. Enlace compartible,
+  hoy, «Diferencia de invertir junto a la inflación»); los años se mueven desde una píldora flotante abajo y los gráficos la siguen en vivo. Enlace compartible,
   ES/EN, claro/oscuro, aviso legal en `/legal`.
 - **Repo privado:** https://github.com/1to1-Digital-Solutions/investment-calculator
 - **Producción:** https://inversion-calculadora.vercel.app (proyecto `investment-calculator` del equipo

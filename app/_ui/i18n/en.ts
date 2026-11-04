@@ -49,7 +49,7 @@ export const en = {
       gap: "Eaten by inflation",
     },
     outcome: {
-      title: "Investing or not: what it buys",
+      title: "The difference investing makes, with inflation",
       investing: "Investing, in today's money",
       cash: "Kept as cash, in today's money",
       gap: "What investing adds",

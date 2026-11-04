@@ -18,9 +18,9 @@ never leave the page, and a scenario can be shared because it lives in the URL.
   switch inside the chart, downloadable as CSV.
 - **Against inflation**: the balance of each year and what that balance buys today; the shaded
   gap between the two lines is what inflation eats.
-- **Investing or not**: what the same money buys over time, invested and kept as cash, both in
-  today's money; the shaded gap is what investing adds, and the note under the chart says how
-  much more (or less) it buys at the end.
+- **The difference investing makes, with inflation**: what the same money buys over time,
+  invested and kept as cash, both in today's money; the shaded gap is what investing adds, and
+  the note under the chart says how much more (or less) it buys at the end.
 - **Inflation with a date.** The default is the latest annual CPI of Spain published when the
   tool was written (INE, October 2026); it is shown with that date and can be changed.
 - **Share a scenario**: the parameters are in the URL, so copying the link copies the plan.

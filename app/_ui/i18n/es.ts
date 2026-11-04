@@ -47,7 +47,7 @@ export const es: Messages = {
       gap: "Se lo come la inflación",
     },
     outcome: {
-      title: "Invertir o no: lo que compra",
+      title: "Diferencia de invertir junto a la inflación",
       investing: "Invirtiendo, en dinero de hoy",
       cash: "Guardado sin invertir, en dinero de hoy",
       gap: "Lo que añade invertir",

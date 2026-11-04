@@ -6,7 +6,7 @@ import { Area, AreaChart, CartesianGrid, ComposedChart, Legend, Line, Responsive
 import { formatCompact, formatMoney } from "@/lib/finance/format";
 import { outcome, type YearRow } from "@/lib/finance/simulate";
 import { useLocale, useMessages, type Locale } from "./i18n/locale";
-import { card, link, muted } from "./styles";
+import { button, card, muted } from "./styles";
 import { YearTable } from "./table";
 
 const HEIGHT = 260;
@@ -98,7 +98,7 @@ export function GrowthChart({ rows, animate }: ChartProps) {
     <Panel
       title={t.charts.growth.title}
       action={
-        <button type="button" className={`${link} -mr-2 -mt-2 shrink-0`} onClick={() => setView(other)}>
+        <button type="button" className={`${button} shrink-0`} onClick={() => setView(other)}>
           {view === "chart" ? t.charts.growth.showTable : t.charts.growth.showChart}
         </button>
       }
