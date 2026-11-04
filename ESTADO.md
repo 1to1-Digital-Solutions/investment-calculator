@@ -22,7 +22,7 @@
 Segunda vuelta (simplificación pedida por César el 4/11/2026) hecha y verificada en local
 (escritorio y móvil, claro y oscuro): sin modo objetivo, formulario arriba y resultados al pulsar
 «Calcular», tabla dentro de «Crecimiento», inflación en dos líneas con la brecha sombreada,
-relleno translúcido. **Sin commitear ni publicar**: falta su visto bueno.
+relleno translúcido. Commiteada y publicada el mismo día.
 
 Ideas que quedaron fuera a propósito (v1 simple): modo «¿cuándo llego a X?» (se quitó en la
 segunda vuelta), comisiones anuales, impuestos sobre la ganancia, aportación que crece cada año,
