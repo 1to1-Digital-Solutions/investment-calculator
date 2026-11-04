@@ -8,7 +8,10 @@
   «¿cuánto tendré?» (años) o «¿cuándo llego a X?» (objetivo). Tres gráficos (crecimiento, frente a
   la inflación, resultado real), tabla anual con CSV, enlace compartible, ES/EN, claro/oscuro.
 - **Repo privado:** https://github.com/1to1-Digital-Solutions/investment-calculator
-- **Producción:** ver el final de este fichero (se rellena al desplegar).
+- **Producción:** https://inversion-calculadora.vercel.app (proyecto `investment-calculator` del equipo
+  `1to1-digital-solutions`; `investment-calculator.vercel.app` y `calculadora-inversion.vercel.app` los
+  tiene otra gente). El alias corto va dado de alta como dominio del proyecto: un alias suelto
+  quedaba detrás del login de Vercel.
 - **Carpeta local:** `~/Proyectos/1to1DigitalSolutions/calculadora-inversion`.
 - Molde: `formato-linkedin` (misma estructura, tokens de color, i18n, tema). Diferencias: el repo
   es privado, así que `ESTADO.md` y `.claude/rules/` sí van en git.
