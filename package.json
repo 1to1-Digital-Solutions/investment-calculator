@@ -1,0 +1,41 @@
+{
+  "name": "investment-calculator",
+  "version": "0.1.0",
+  "private": true,
+  "description": "See how an investment grows with compound interest, what inflation takes from it and when it reaches a goal. Runs entirely in the browser.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/1to1-Digital-Solutions/investment-calculator.git"
+  },
+  "packageManager": "pnpm@11.6.0",
+  "engines": {
+    "node": ">=24.15.0"
+  },
+  "scripts": {
+    "dev": "next dev -p 3500 -H 127.0.0.1",
+    "build": "next build",
+    "start": "next start -p 3500",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "next": "16.4.5",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "recharts": "^3.10.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^24.19.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitest/coverage-v8": "^3.2.7",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "16.4.5",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.7"
+  }
+}

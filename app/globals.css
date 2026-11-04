@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+/*
+ * Colours as tokens: anthracite and the 1to1 Digital Solutions green (#1f957a) with its scale.
+ * Components only use these names (`bg-surface`, `text-accent`…), never a loose hex or the
+ * Tailwind palette: changing a shade means changing it here, once for light and once for dark.
+ *
+ * Each token is a `light-dark()` pair and `color-scheme` picks the side: the browser's
+ * preference by default, or the one chosen with the theme switch (`data-theme` on `<html>`).
+ *
+ * Surface hierarchy: `background` (the page) < `surface` (cards) < `raised` (hover, what is
+ * active). `field` is the background of controls.
+ *
+ * The chart series have their own tokens so the three charts tell the same story with the same
+ * colours: `chart-contributed` (what is yours), `chart-interest` (what it earned, the green),
+ * `chart-real` (today's money) and `chart-cash` (money that was not invested).
+ */
+:root {
+  color-scheme: light dark;
+  --background: light-dark(#f4f4f5, #27272a);
+  --surface: light-dark(#ffffff, #313135);
+  --raised: light-dark(#f0f0f2, #3b3b40);
+  --border: light-dark(#dcdce0, #44444a);
+  --field-border: light-dark(#8a8a93, #7a7a83);
+  --field: light-dark(#ffffff, #1e1e21);
+  --text: light-dark(#1c1c1f, #ededed);
+  --muted: light-dark(#52525b, #b0b0b8);
+  --primary: light-dark(#188169, #1f957a);
+  --primary-hover: light-dark(#116e57, #1ac89a);
+  --on-primary: light-dark(#ffffff, #1c1c1f);
+  --accent: light-dark(#116e57, #1ac89a);
+  --accent-soft: light-dark(#d5f2ea, #1d3b35);
+  --danger: light-dark(#b91c1c, #fa8a8a);
+  --focus: light-dark(#116e57, #14ffbc);
+
+  --chart-contributed: light-dark(#4b5563, #a1a1aa);
+  --chart-interest: light-dark(#1f957a, #1ac89a);
+  --chart-real: light-dark(#b45309, #fbbf24);
+  --chart-cash: light-dark(#9ca3af, #71717a);
+  --chart-grid: light-dark(#e4e4e7, #3f3f46);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-raised: var(--raised);
+  --color-border: var(--border);
+  --color-field-border: var(--field-border);
+  --color-field: var(--field);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-on-primary: var(--on-primary);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-danger: var(--danger);
+  --color-focus: var(--focus);
+  --color-chart-contributed: var(--chart-contributed);
+  --color-chart-interest: var(--chart-interest);
+  --color-chart-real: var(--chart-real);
+  --color-chart-cash: var(--chart-cash);
+}
+
+html,
+body {
+  background-color: var(--background);
+  color: var(--text);
+}
+
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Focus is always visible, with the keyboard, in light and in dark. */
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+button:not(:disabled),
+summary {
+  cursor: pointer;
+}
+
+/* Number fields: no spinner arrows, they are too small to tap and the keyboard does the job. */
+input[type="number"] {
+  appearance: textfield;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+/* The years slider, in the accent colour on every browser. */
+input[type="range"] {
+  accent-color: var(--primary);
+}
+
+::selection {
+  background-color: var(--primary);
+  color: var(--on-primary);
+}
+
+/* Recharts draws its own focus outline on the wrapper; ours is enough. */
+.recharts-wrapper:focus-visible {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+}
