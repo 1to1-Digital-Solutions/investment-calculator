@@ -2,7 +2,7 @@
 
 **What it is:** a single-page calculator of compound interest against inflation. Initial capital,
 monthly contribution, annual return and years in; on "Calculate", a summary and three charts
-(growth, with a year-by-year table inside; against inflation; real result) draw themselves below
+(growth, with a year-by-year table inside; against inflation; investing or not) draw themselves below
 the form, and a years slider pinned to the bottom moves them live. `/legal` is the legal notice.
 See `README.md` for the feature list and how the numbers are made.
 
@@ -31,7 +31,7 @@ pnpm coverage && pnpm build`, all green before finishing. Kill the dev server by
 
 **Handle with care:**
 - **The conventions in `simulate.ts`** (effective annual rate, contribution at the end of the
-  month, Fisher for the real rate, each contribution deflated from its own month) are what make
+  month, Fisher for the real rate, cash deflated as a whole from each year) are what make
   the numbers comparable with other calculators. Changing one changes every result: do it with
   its test and say so.
 - **The default inflation is a dated figure** (`INFLATION_DEFAULT` in `params.ts`): update value

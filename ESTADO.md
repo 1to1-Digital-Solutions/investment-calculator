@@ -6,8 +6,8 @@
 
 - Calculadora de inversión: capital inicial, aportación mensual, rentabilidad, inflación y años;
   al pulsar «Calcular» aparecen debajo del formulario, animados, el resumen y tres gráficos
-  (crecimiento con tabla año a año dentro y CSV, frente a la inflación, resultado real); los años
-  se mueven desde una barra fija abajo y los gráficos la siguen en vivo. Enlace compartible,
+  (crecimiento con tabla año a año dentro y CSV, frente a la inflación, invertir o no en dinero de
+  hoy); los años se mueven desde una píldora flotante abajo y los gráficos la siguen en vivo. Enlace compartible,
   ES/EN, claro/oscuro, aviso legal en `/legal`.
 - **Repo privado:** https://github.com/1to1-Digital-Solutions/investment-calculator
 - **Producción:** https://inversion-calculadora.vercel.app (proyecto `investment-calculator` del equipo
@@ -20,9 +20,13 @@
 
 ## ⏭️ Siguiente paso
 
-Tercera vuelta (4/11/2026): barra fija de años que mueve los gráficos en vivo, aviso siempre
-visible bajo el formulario y página `/legal` enlazada en el pie, con la identidad de la empresa
-sacada de la política de privacidad de la landing. **Falta en `/legal` el dato del Registro
+Tercera vuelta (4/11/2026): píldora flotante de años (como el navbar de la landing) que mueve los
+gráficos en vivo, sin descripciones bajo los títulos (leyenda grande), tercer gráfico como líneas
+«invirtiendo» frente a «guardado sin invertir» en dinero de hoy, aviso siempre visible bajo el
+formulario y página `/legal` enlazada en el pie, con la identidad de la empresa sacada de la
+política de privacidad de la landing. César vio que al pasar de escritorio a móvil «no se ajusta
+bien»; en Playwright (1280 → 390 px) los gráficos sí encogen; se añadió `min-w-0` a los paneles
+por si acaso y queda pendiente que diga qué vio. **Falta en `/legal` el dato del Registro
 Mercantil** (tomo, folio, hoja): el art. 10 de la LSSI lo pide; añadirlo en `PUBLISHER` y en
 `legal.identity` cuando César lo pase. Verificada en local; publicar tras el visto bueno.
 
@@ -59,9 +63,10 @@ con un script suelto (viewport iPhone 13, claro y oscuro).
 
 ## 🗂️ Decisiones
 
-- **Ganancia real** = saldo en dinero de hoy − cada aportación deflactada desde su mes. Comparar
-  contra el aportado nominal daba «pérdida real» con un 2 % de rentabilidad real: contaba un euro
-  del año 19 como un euro de hoy.
+- **Lo que añade invertir** = saldo en dinero de hoy − lo aportado en dinero de hoy (guardado en
+  efectivo, deflactado desde cada año). Es la comparación que entiende cualquiera: el mismo
+  dinero, invertido o en el cajón. Se descartó comparar contra cada aportación deflactada desde
+  su mes: correcto pero inexplicable en una leyenda.
 - **El escenario calculado vive en la URL** (`useSyncExternalStore`, `replaceState`); el
   formulario guarda las ediciones aparte hasta «Calcular». Así el enlace siempre es lo que hay en
   pantalla, no hay desajuste de hidratación y un enlace compartido abre ya con los resultados.

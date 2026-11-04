@@ -18,8 +18,9 @@ never leave the page, and a scenario can be shared because it lives in the URL.
   switch inside the chart, downloadable as CSV.
 - **Against inflation**: the balance of each year and what that balance buys today; the shaded
   gap between the two lines is what inflation eats.
-- **Real result**: at the end, what was put in, what there is and what it buys today, with the
-  purchasing power lost to inflation and the real gain (or loss) spelled out.
+- **Investing or not**: what the same money buys over time, invested and kept as cash, both in
+  today's money; the shaded gap is what investing adds, and the note under the chart says how
+  much more (or less) it buys at the end.
 - **Inflation with a date.** The default is the latest annual CPI of Spain published when the
   tool was written (INE, October 2026); it is shown with that date and can be changed.
 - **Share a scenario**: the parameters are in the URL, so copying the link copies the plan.
@@ -33,9 +34,8 @@ never leave the page, and a scenario can be shared because it lives in the URL.
 The annual return is an effective rate (7 % means ×1.07 in a year) compounded monthly through the
 equivalent monthly rate. Contributions go in at the end of each month, after that month's
 interest. Inflation deflates a nominal amount to today's money by dividing by (1 + i)^years, and
-the real return follows Fisher, (1 + r) / (1 + i) − 1, not a subtraction. The real gain compares
-the final balance in today's money with each contribution valued in the euros of the month it
-was made. No fees and no taxes: it is a simplified projection, not advice. The conventions are
+the real return follows Fisher, (1 + r) / (1 + i) − 1, not a subtraction. "Kept as cash" is the
+sum of what was put in, deflated the same way. No fees and no taxes: it is a simplified projection, not advice. The conventions are
 written at the top of `lib/finance/simulate.ts` and every one has a test.
 
 ## Development

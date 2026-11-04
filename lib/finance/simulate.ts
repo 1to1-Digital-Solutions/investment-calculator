@@ -9,11 +9,9 @@
  *   The initial capital is there from day one.
  * - Nothing is taken out: no fees, no taxes. The tool shows the mechanics, not a tax return.
  * - `real` deflates the balance to today's money with the annual inflation rate: what the
- *   balance of that year buys today.
- * - `contributedReal` deflates each contribution from the month it was made: the purchasing
- *   power that was actually given up. It is what `real` has to beat for the investment to have
- *   gained anything; comparing `real` with the nominal `contributed` would count a euro of year
- *   19 as a euro of today.
+ *   balance of that year buys today. `cashReal` does the same with the sum of what was put in,
+ *   as if it had been kept as cash and never invested: the two are what the same money buys,
+ *   investing and not investing, and their difference is what the investment really adds.
  */
 
 export interface Inputs {
@@ -40,8 +38,8 @@ export interface YearRow {
   balance: number;
   /** The balance in today's euros. */
   real: number;
-  /** What was put in, each contribution in the euros of the day it was made. */
-  contributedReal: number;
+  /** What was put in, in today's euros, had it stayed as cash. */
+  cashReal: number;
 }
 
 /** The monthly rate that compounds to the given effective annual rate. */
@@ -57,26 +55,24 @@ export function deflate(amount: number, inflationPercent: number, years: number)
 /** One row per year, from year 0 (the starting point) to `years`. */
 export function simulate(inputs: Inputs): YearRow[] {
   const rate = monthlyRate(inputs.annualRate);
-  const row = (year: number, balance: number, contributed: number, contributedReal: number): YearRow => ({
+  const row = (year: number, balance: number, contributed: number): YearRow => ({
     year,
     contributed,
     interest: balance - contributed,
     balance,
     real: deflate(balance, inputs.inflation, year),
-    contributedReal,
+    cashReal: deflate(contributed, inputs.inflation, year),
   });
 
   let balance = inputs.initial;
   let contributed = inputs.initial;
-  let contributedReal = inputs.initial;
-  const rows = [row(0, balance, contributed, contributedReal)];
+  const rows = [row(0, balance, contributed)];
   for (let year = 1; year <= inputs.years; year++) {
     for (let month = 1; month <= 12; month++) {
       balance = balance * (1 + rate) + inputs.monthly;
       contributed += inputs.monthly;
-      contributedReal += deflate(inputs.monthly, inputs.inflation, year - 1 + month / 12);
     }
-    rows.push(row(year, balance, contributed, contributedReal));
+    rows.push(row(year, balance, contributed));
   }
   return rows;
 }

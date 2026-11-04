@@ -22,7 +22,7 @@ describe("simulate", () => {
 
   it("starts from the initial capital, with nothing earned yet", () => {
     const [start] = simulate(base);
-    expect(start).toEqual({ year: 0, contributed: 1_000, interest: 0, balance: 1_000, real: 1_000, contributedReal: 1_000 });
+    expect(start).toEqual({ year: 0, contributed: 1_000, interest: 0, balance: 1_000, real: 1_000, cashReal: 1_000 });
   });
 
   it("with no return, the balance is just what was put in", () => {
@@ -41,24 +41,17 @@ describe("simulate", () => {
     expect(first?.contributed).toBe(1_200);
   });
 
-  it("deflates the balance to today's euros", () => {
+  it("deflates both the balance and the cash to today's euros", () => {
     const rows = simulate({ ...base, inflation: 4.9, years: 10 });
     const last = outcome(rows);
     expect(last.real).toBeCloseTo(last.balance / Math.pow(1.049, 10), 9);
+    expect(last.cashReal).toBeCloseTo(1_000 / Math.pow(1.049, 10), 9);
     expect(last.real).toBeLessThan(last.balance);
   });
 
-  it("values each contribution in the euros of its own month", () => {
-    const inputs = { ...base, initial: 0, monthly: 100, annualRate: 0, inflation: 4.9, years: 2 };
-    const last = outcome(simulate(inputs));
-    // Without inflation the two are the same; with it, deflating from each month lands between
-    // the nominal sum and the sum deflated as a whole from the end.
-    expect(outcome(simulate({ ...inputs, inflation: 0 })).contributedReal).toBe(2_400);
-    expect(last.contributedReal).toBeLessThan(last.contributed);
-    expect(last.contributedReal).toBeGreaterThan(deflate(last.contributed, 4.9, 2));
-    let expected = 0;
-    for (let month = 1; month <= 24; month++) expected += 100 / Math.pow(1.049, month / 12);
-    expect(last.contributedReal).toBeCloseTo(expected, 9);
+  it("investing beats cash by exactly the deflated interest", () => {
+    const last = outcome(simulate({ ...base, monthly: 100, inflation: 3, years: 5 }));
+    expect(last.real - last.cashReal).toBeCloseTo(last.interest / Math.pow(1.03, 5), 9);
   });
 
   it("a negative return shrinks the balance", () => {

@@ -47,8 +47,9 @@ export function App() {
   }
 
   return (
-    <div className="flex min-h-dvh flex-col">
-      <main className={`mx-auto flex w-full max-w-4xl flex-1 flex-col gap-5 px-4 pt-[max(2rem,env(safe-area-inset-top))] sm:px-6 sm:pt-8 ${showing ? "pb-24" : "pb-8"}`}>
+    // Room at the bottom for the floating years bar, so it never covers the footer.
+    <div className={`flex min-h-dvh flex-col ${showing ? "pb-20" : ""}`}>
+      <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-5 px-4 pt-[max(2rem,env(safe-area-inset-top))] pb-8 sm:px-6 sm:pt-8">
         <header className="flex flex-col gap-2">
           <div className="flex items-start justify-between gap-4">
             <h1 className="text-2xl font-semibold tracking-tight">{t.title}</h1>
