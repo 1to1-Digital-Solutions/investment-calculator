@@ -21,33 +21,30 @@ describe("parseParams", () => {
     expect(DEFAULTS.inflation).toBe(INFLATION_DEFAULT.value);
   });
 
-  it("reads every field and the mode", () => {
-    expect(parseParams("?i=5000&m=150&r=5.5&f=3&y=30&mode=goal&t=250000")).toEqual({
+  it("reads every field", () => {
+    expect(parseParams("?i=5000&m=150&r=5.5&f=3&y=30")).toEqual({
       initial: 5_000,
       monthly: 150,
       rate: 5.5,
       inflation: 3,
       years: 30,
-      mode: "goal",
-      target: 250_000,
     });
   });
 
   it("falls back to the default for garbage and clamps what is out of range", () => {
-    const params = parseParams("i=abc&m=&r=Infinity&y=500&mode=whatever");
+    const params = parseParams("i=abc&m=&r=Infinity&y=500&unknown=1");
     expect(params.initial).toBe(DEFAULTS.initial);
     expect(params.monthly).toBe(DEFAULTS.monthly);
     expect(params.rate).toBe(DEFAULTS.rate);
     expect(params.years).toBe(BOUNDS.years.max);
-    expect(params.mode).toBe("years");
   });
 });
 
 describe("toQuery", () => {
   it("round-trips a scenario and leaves the defaults out", () => {
     expect(toQuery(DEFAULTS)).toBe("");
-    const custom = { ...DEFAULTS, initial: 20_000, mode: "goal" as const, target: 50_000 };
-    expect(toQuery(custom)).toBe("i=20000&mode=goal&t=50000");
+    const custom = { ...DEFAULTS, initial: 20_000, years: 30 };
+    expect(toQuery(custom)).toBe("i=20000&y=30");
     expect(parseParams(toQuery(custom))).toEqual(custom);
   });
 });

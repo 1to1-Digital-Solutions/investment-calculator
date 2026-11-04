@@ -8,9 +8,8 @@
  * - The monthly contribution goes in at the end of each month, after that month's interest.
  *   The initial capital is there from day one.
  * - Nothing is taken out: no fees, no taxes. The tool shows the mechanics, not a tax return.
- * - `real` deflates the balance to today's money with the annual inflation rate; `cashReal` does
- *   the same with the sum of what was put in, as if it had been kept as cash: that is what the
- *   same money would have bought had it not been invested.
+ * - `real` deflates the balance to today's money with the annual inflation rate: what the
+ *   balance of that year buys today.
  * - `contributedReal` deflates each contribution from the month it was made: the purchasing
  *   power that was actually given up. It is what `real` has to beat for the investment to have
  *   gained anything; comparing `real` with the nominal `contributed` would count a euro of year
@@ -41,8 +40,6 @@ export interface YearRow {
   balance: number;
   /** The balance in today's euros. */
   real: number;
-  /** What was put in, in today's euros, had it stayed as cash. */
-  cashReal: number;
   /** What was put in, each contribution in the euros of the day it was made. */
   contributedReal: number;
 }
@@ -66,7 +63,6 @@ export function simulate(inputs: Inputs): YearRow[] {
     interest: balance - contributed,
     balance,
     real: deflate(balance, inputs.inflation, year),
-    cashReal: deflate(contributed, inputs.inflation, year),
     contributedReal,
   });
 

@@ -16,12 +16,16 @@ export const label = "text-sm font-medium";
 export const field =
   "min-h-11 w-full rounded-md border border-field-border bg-field px-3 text-base tabular-nums text-text focus-visible:border-accent pointer-fine:min-h-10";
 
-/** A segmented control: two buttons, the pressed one in green. */
-export const segment =
-  "inline-flex min-h-11 flex-1 items-center justify-center rounded-md px-3 text-sm font-medium text-muted transition-colors hover:bg-raised hover:text-text aria-pressed:bg-accent-soft aria-pressed:text-accent pointer-fine:min-h-9";
-
 export const button =
   "inline-flex min-h-11 items-center justify-center gap-1 rounded-md border border-field-border bg-surface px-3.5 text-sm font-medium whitespace-nowrap text-text transition-colors hover:border-accent hover:bg-raised disabled:cursor-not-allowed disabled:opacity-50 pointer-fine:min-h-9";
+
+/** The one action of the page: calculate. */
+export const primaryButton =
+  "inline-flex min-h-12 items-center justify-center rounded-md bg-primary px-6 text-base font-semibold whitespace-nowrap text-on-primary transition-colors hover:bg-primary-hover pointer-fine:min-h-11";
+
+/** A small text button inside a card, such as the chart/table switch. */
+export const link =
+  "inline-flex min-h-11 items-center rounded-md px-2 text-sm font-medium text-accent underline-offset-4 hover:underline pointer-fine:min-h-8";
 
 /** An icon-only control in the header. */
 export const control =

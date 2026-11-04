@@ -1,15 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
+import type { Params } from "@/lib/finance/params";
 import { GrowthChart, InflationChart, OutcomeChart } from "./charts";
 import { PlanForm } from "./form";
 import { LOCALES, setLocale, useLocale, useMessages, type Locale } from "./i18n/locale";
 import { useScenario } from "./scenario";
 import { button, control, muted } from "./styles";
 import { Summary } from "./summary";
-import { YearTable } from "./table";
 import { setTheme, useTheme } from "./theme";
+import { setParams, useOpenedFromLink } from "./url-params";
 
 /** The company behind the tool: the credit links to its site so every app points at the same place. */
 const COMPANY_URL = "https://1to1digital.solutions/";
@@ -19,19 +20,38 @@ const LINKS = [
   { name: "LinkedIn", href: "https://www.linkedin.com/in/c%C3%A9sar-pe%C3%B3n-lamparero/" },
 ] as const;
 
-/** The page: header with language and theme, the form beside the results, and the footer. */
+/** Each block of results rises into view a beat after the one before. */
+const STAGGER_MS = 150;
+
+/** The page: header with language and theme, the form, the results below it once asked for, and the footer. */
 export function App() {
   const t = useMessages();
   const locale = useLocale();
   const theme = useTheme();
   const next = theme === "dark" ? "light" : "dark";
   const scenario = useScenario();
+  const openedFromLink = useOpenedFromLink();
+  // Counts the calculations: each one remounts the results so the charts draw themselves again.
+  const [run, setRun] = useState(0);
   const [notice, setNotice] = useState("");
+  const results = useRef<HTMLDivElement>(null);
+  const showing = openedFromLink || run > 0;
 
   // The server renders `lang="en"`; the remembered language takes over once on the client.
   useEffect(() => {
     document.documentElement.lang = locale;
   }, [locale]);
+
+  // On a phone the form fills the screen: bring the fresh results into view.
+  useEffect(() => {
+    if (run > 0) results.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [run]);
+
+  function calculate(params: Params) {
+    setParams(params);
+    setNotice("");
+    setRun((n) => n + 1);
+  }
 
   async function share() {
     try {
@@ -42,9 +62,16 @@ export function App() {
     }
   }
 
+  const blocks = [
+    <Summary key="summary" scenario={scenario} />,
+    <GrowthChart key="growth" rows={scenario.rows} />,
+    <InflationChart key="inflation" rows={scenario.rows} />,
+    <OutcomeChart key="outcome" rows={scenario.rows} />,
+  ];
+
   return (
     <div className="flex min-h-dvh flex-col">
-      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-5 px-4 pt-[max(2rem,env(safe-area-inset-top))] pb-8 sm:px-6 sm:pt-8">
+      <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-5 px-4 pt-[max(2rem,env(safe-area-inset-top))] pb-8 sm:px-6 sm:pt-8">
         <header className="flex flex-col gap-2">
           <div className="flex items-start justify-between gap-4">
             <h1 className="text-2xl font-semibold tracking-tight">{t.title}</h1>
@@ -80,10 +107,16 @@ export function App() {
           <p className={muted}>{t.tagline}</p>
         </header>
 
-        <div className="grid gap-5 lg:grid-cols-[20rem_1fr] lg:items-start">
-          <div className="flex flex-col gap-3 lg:sticky lg:top-6">
-            <PlanForm scenario={scenario} />
-            <div className="flex flex-wrap items-center gap-3">
+        <PlanForm calculated={scenario.params} showing={showing} onCalculate={calculate} />
+
+        {showing && (
+          <div ref={results} key={run} className="flex scroll-mt-4 flex-col gap-5">
+            {blocks.map((block, index) => (
+              <div key={block.key} className="animate-rise" style={{ animationDelay: `${index * STAGGER_MS}ms` }}>
+                {block}
+              </div>
+            ))}
+            <div className="animate-rise flex flex-wrap items-center gap-3" style={{ animationDelay: `${blocks.length * STAGGER_MS}ms` }}>
               <button type="button" className={button} onClick={share}>
                 {t.share.button}
               </button>
@@ -91,22 +124,14 @@ export function App() {
                 {notice}
               </p>
             </div>
-          </div>
-
-          <div className="flex min-w-0 flex-col gap-5">
-            <Summary scenario={scenario} />
-            <GrowthChart rows={scenario.rows} />
-            <InflationChart rows={scenario.rows} />
-            <OutcomeChart rows={scenario.rows} />
-            <YearTable rows={scenario.rows} />
             <p className={`text-xs ${muted}`}>{t.disclaimer}</p>
           </div>
-        </div>
+        )}
       </main>
 
       <footer className="border-t border-border">
         <div
-          className={`mx-auto flex max-w-6xl flex-col items-center gap-x-6 gap-y-2 px-4 pt-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] text-center text-sm sm:flex-row sm:justify-between sm:px-6 sm:pt-5 sm:pb-[max(1.25rem,env(safe-area-inset-bottom))] ${muted}`}
+          className={`mx-auto flex max-w-4xl flex-col items-center gap-x-6 gap-y-2 px-4 pt-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] text-center text-sm sm:flex-row sm:justify-between sm:px-6 sm:pt-5 sm:pb-[max(1.25rem,env(safe-area-inset-bottom))] ${muted}`}
         >
           <p>
             {t.footer.madeBy} ·{" "}

@@ -4,7 +4,7 @@
  */
 export const en = {
   title: "Investment Calculator",
-  tagline: "See how your money grows with compound interest, what inflation takes from it and when you reach your goal.",
+  tagline: "See how your money grows with compound interest and what inflation takes from it.",
   language: "Language",
   theme: { toLight: "Switch to light theme", toDark: "Switch to dark theme" },
 
@@ -17,23 +17,14 @@ export const en = {
     inflationHint: (value: string, period: string, source: string) =>
       `Default: ${value}, Spain's CPI for ${period} (${source}). Change it if you prefer another figure.`,
     years: "Years",
-    target: "Target amount",
     euro: "€",
     percent: "%",
-    mode: "What do you want to know?",
-    modeYears: "How much will I have?",
-    modeGoal: "When do I reach a goal?",
+    calculate: "Calculate",
+    recalculate: "Recalculate",
   },
 
   summary: {
-    yearsTitle: (years: number) => `After ${years} ${years === 1 ? "year" : "years"}`,
-    goalReached: (years: number, months: number) => {
-      const y = years === 0 ? "" : `${years} ${years === 1 ? "year" : "years"}`;
-      const m = months === 0 ? "" : `${months} ${months === 1 ? "month" : "months"}`;
-      return `You reach your goal in ${[y, m].filter(Boolean).join(" and ") || "no time: you already have it"}`;
-    },
-    goalUnreachable: "With nothing added each month and no return, the balance never reaches that amount.",
-    goalTooFar: "Not within a hundred years. Add more each month or set a closer goal.",
+    title: (years: number) => `After ${years} ${years === 1 ? "year" : "years"}`,
     balance: "Final balance",
     contributed: "What you put in",
     interest: "What it earned",
@@ -48,13 +39,15 @@ export const en = {
       about: "Each year: what you have put in and what the investment has earned on top. The interest grows faster every year: that is compound interest.",
       contributed: "Put in",
       interest: "Earned",
+      showTable: "See year by year",
+      showChart: "See the chart",
     },
     inflation: {
       title: "Against inflation",
-      about: "The balance in the euros of each year, and what it is really worth in today's money. The grey line is the same money kept as cash, losing value to inflation.",
+      about: "The green line is your balance each year. The amber one is what that balance would buy today. The shaded gap between them is what inflation eats.",
       nominal: "Balance",
-      real: "Balance in today's money",
-      cash: "Cash, in today's money",
+      real: "What it buys today",
+      gap: "Eaten by inflation",
     },
     outcome: {
       title: "Real result",
@@ -66,12 +59,10 @@ export const en = {
       realGain: (amount: string) => `Real gain: ${amount}.`,
       realLoss: (amount: string) => `Real loss: ${amount}. The return does not keep up with inflation.`,
     },
-    year: "Year",
     yearN: (year: number) => `Year ${year}`,
   },
 
   table: {
-    summary: "Year by year",
     year: "Year",
     contributed: "Put in",
     interest: "Earned",

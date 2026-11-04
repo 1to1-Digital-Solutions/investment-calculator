@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { formatCompact, formatMoney, formatPercent, splitMonths, toCsv } from "./format";
+import { formatCompact, formatMoney, formatPercent, toCsv } from "./format";
 
 /** Intl separates with non-breaking spaces (U+00A0, U+202F); the tests compare plain ones. */
 const plain = (s: string) => s.replace(/[\u00a0\u202f]/g, " ");
@@ -26,14 +26,6 @@ describe("formatCompact", () => {
     expect(formatCompact(1_200, "en")).toBe("1.2K");
     expect(formatCompact(2_500_000, "en")).toBe("2.5M");
     expect(plain(formatCompact(350_000, "es"))).toBe("350 mil");
-  });
-});
-
-describe("splitMonths", () => {
-  it("splits into years and the months left", () => {
-    expect(splitMonths(30)).toEqual({ years: 2, months: 6 });
-    expect(splitMonths(12)).toEqual({ years: 1, months: 0 });
-    expect(splitMonths(5)).toEqual({ years: 0, months: 5 });
   });
 });
 

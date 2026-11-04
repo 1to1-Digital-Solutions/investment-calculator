@@ -3,16 +3,12 @@
  * shared as a link. Only numbers travel: the tool knows nothing about the person.
  */
 
-export type Mode = "years" | "goal";
-
 export interface Params {
   initial: number;
   monthly: number;
   rate: number;
   inflation: number;
   years: number;
-  mode: Mode;
-  target: number;
 }
 
 /**
@@ -28,8 +24,6 @@ export const DEFAULTS: Params = {
   rate: 7,
   inflation: INFLATION_DEFAULT.value,
   years: 20,
-  mode: "years",
-  target: 100_000,
 };
 
 interface Bound {
@@ -39,13 +33,12 @@ interface Bound {
   decimals: number;
 }
 
-export const BOUNDS: Record<Exclude<keyof Params, "mode">, Bound> = {
+export const BOUNDS: Record<keyof Params, Bound> = {
   initial: { min: 0, max: 100_000_000, decimals: 0 },
   monthly: { min: 0, max: 1_000_000, decimals: 0 },
   rate: { min: -50, max: 50, decimals: 2 },
   inflation: { min: -20, max: 100, decimals: 2 },
   years: { min: 1, max: 60, decimals: 0 },
-  target: { min: 1, max: 1_000_000_000, decimals: 0 },
 };
 
 /** Keeps a value inside its bounds and rounds it to the decimals the field has. */
@@ -63,11 +56,9 @@ const KEYS: Record<keyof Params, string> = {
   rate: "r",
   inflation: "f",
   years: "y",
-  mode: "mode",
-  target: "t",
 };
 
-function readNumber(search: URLSearchParams, key: keyof typeof BOUNDS): number {
+function readNumber(search: URLSearchParams, key: keyof Params): number {
   const raw = search.get(KEYS[key]);
   if (raw === null || raw.trim() === "") return DEFAULTS[key];
   const value = Number(raw);
@@ -83,8 +74,6 @@ export function parseParams(query: string): Params {
     rate: readNumber(search, "rate"),
     inflation: readNumber(search, "inflation"),
     years: readNumber(search, "years"),
-    mode: search.get(KEYS.mode) === "goal" ? "goal" : "years",
-    target: readNumber(search, "target"),
   };
 }
 

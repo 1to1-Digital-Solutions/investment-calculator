@@ -2,7 +2,7 @@ import type { Messages } from "./en";
 
 export const es: Messages = {
   title: "Calculadora de inversión",
-  tagline: "Mira cómo crece tu dinero con el interés compuesto, cuánto le quita la inflación y cuándo llegas a tu objetivo.",
+  tagline: "Mira cómo crece tu dinero con el interés compuesto y cuánto le quita la inflación.",
   language: "Idioma",
   theme: { toLight: "Cambiar a tema claro", toDark: "Cambiar a tema oscuro" },
 
@@ -15,23 +15,14 @@ export const es: Messages = {
     inflationHint: (value, period, source) =>
       `Por defecto: ${value}, el IPC de España de ${period} (${source}). Cámbialo si prefieres otra cifra.`,
     years: "Años",
-    target: "Cantidad objetivo",
     euro: "€",
     percent: "%",
-    mode: "¿Qué quieres saber?",
-    modeYears: "¿Cuánto tendré?",
-    modeGoal: "¿Cuándo llego a una cifra?",
+    calculate: "Calcular",
+    recalculate: "Recalcular",
   },
 
   summary: {
-    yearsTitle: (years) => `Al cabo de ${years} ${years === 1 ? "año" : "años"}`,
-    goalReached: (years, months) => {
-      const y = years === 0 ? "" : `${years} ${years === 1 ? "año" : "años"}`;
-      const m = months === 0 ? "" : `${months} ${months === 1 ? "mes" : "meses"}`;
-      return `Llegas a tu objetivo en ${[y, m].filter(Boolean).join(" y ") || "nada: ya lo tienes"}`;
-    },
-    goalUnreachable: "Sin aportar nada cada mes y sin rentabilidad, el saldo nunca llega a esa cifra.",
-    goalTooFar: "No en cien años. Aporta más cada mes o pon un objetivo más cercano.",
+    title: (years) => `Al cabo de ${years} ${years === 1 ? "año" : "años"}`,
     balance: "Saldo final",
     contributed: "Lo que has puesto",
     interest: "Lo que ha generado",
@@ -46,13 +37,15 @@ export const es: Messages = {
       about: "Cada año: lo que has puesto y lo que la inversión ha generado encima. Los intereses crecen más deprisa cada año: eso es el interés compuesto.",
       contributed: "Aportado",
       interest: "Generado",
+      showTable: "Ver año a año",
+      showChart: "Ver el gráfico",
     },
     inflation: {
       title: "Frente a la inflación",
-      about: "El saldo en los euros de cada año y lo que vale de verdad en dinero de hoy. La línea gris es el mismo dinero guardado en efectivo, perdiendo valor con la inflación.",
+      about: "La línea verde es tu saldo cada año. La ámbar, lo que ese saldo compraría hoy. La franja sombreada entre las dos es lo que se come la inflación.",
       nominal: "Saldo",
-      real: "Saldo en dinero de hoy",
-      cash: "Efectivo, en dinero de hoy",
+      real: "Lo que compra hoy",
+      gap: "Se lo come la inflación",
     },
     outcome: {
       title: "Resultado real",
@@ -64,12 +57,10 @@ export const es: Messages = {
       realGain: (amount) => `Ganancia real: ${amount}.`,
       realLoss: (amount) => `Pérdida real: ${amount}. La rentabilidad no alcanza a la inflación.`,
     },
-    year: "Año",
     yearN: (year) => `Año ${year}`,
   },
 
   table: {
-    summary: "Año a año",
     year: "Año",
     contributed: "Aportado",
     interest: "Generado",

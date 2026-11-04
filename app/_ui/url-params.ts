@@ -5,8 +5,9 @@ import { useSyncExternalStore } from "react";
 import { DEFAULTS, parseParams, toQuery, type Params } from "@/lib/finance/params";
 
 /**
- * The scenario lives in the URL: it is read from the query string the first time it is needed
- * and every change is written back with `replaceState`, so the address bar is always a link to
+ * The calculated scenario lives in the URL: it is read from the query string the first time it
+ * is needed
+ * and every calculation is written back with `replaceState`, so the address bar is always a link to
  * what is on screen. Read through `useSyncExternalStore` so the server (which has no URL to
  * look at) renders the defaults and the client takes over at hydration without a mismatch.
  */
@@ -41,4 +42,13 @@ export function setParams(next: Params): void {
 /** The current scenario; the defaults on the server and during hydration. */
 export function useParams(): Params {
   return useSyncExternalStore(subscribe, read, () => DEFAULTS);
+}
+
+/** Whether the page was opened through a shared link: then the results show without a click. */
+export function useOpenedFromLink(): boolean {
+  return useSyncExternalStore(
+    () => () => {},
+    () => window.location.search !== "",
+    () => false,
+  );
 }

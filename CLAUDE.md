@@ -1,9 +1,9 @@
 # CLAUDE.md — Investment Calculator
 
 **What it is:** a single-page calculator of compound interest against inflation. Initial capital,
-monthly contribution and annual return in; a summary, three charts (growth, against inflation,
-real result) and a yearly table out. Either "how much after N years" or "when do I reach X".
-See `README.md` for the feature list and how the numbers are made.
+monthly contribution, annual return and years in; on "Calculate", a summary and three charts
+(growth, with a year-by-year table inside; against inflation; real result) draw themselves below
+the form. See `README.md` for the feature list and how the numbers are made.
 
 **Local context:** `ESTADO.md` carries the current state, what is pending and the operational
 decisions, in Spanish. Read it first.
@@ -15,11 +15,11 @@ and the numbers never leave the browser (the scenario lives in the URL; language
 
 **How the code is split:**
 - `lib/finance/` is the maths, pure and DOM-free: `simulate.ts` (yearly rows, with the
-  conventions written at the top), `goal.ts` (months to a target), `params.ts` (defaults, bounds,
-  URL shape) and `format.ts` (Intl formatting, CSV). Tested at 100 %.
-- `app/` is the wrapper: `_ui/url-params.ts` keeps the scenario in the URL, `_ui/scenario.ts`
-  derives everything from it, `_ui/form.tsx`, `_ui/summary.tsx`, `_ui/charts.tsx` and
-  `_ui/table.tsx` show it. No maths go there. Every interface text lives in `_ui/i18n/en.ts` and
+  conventions written at the top), `params.ts` (defaults, bounds, URL shape) and `format.ts`
+  (Intl formatting, CSV). Tested at 100 %.
+- `app/` is the wrapper: `_ui/url-params.ts` keeps the *calculated* scenario in the URL,
+  `_ui/scenario.ts` derives the rows from it, `_ui/form.tsx` holds the edits until "Calculate",
+  `_ui/summary.tsx`, `_ui/charts.tsx` and `_ui/table.tsx` show the results. No maths go there. Every interface text lives in `_ui/i18n/en.ts` and
   `es.ts` (same shape, checked by TypeScript).
 
 **Run and check:** `pnpm dev` (http://127.0.0.1:3500). Gates: `pnpm typecheck && pnpm lint &&

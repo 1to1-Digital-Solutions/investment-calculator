@@ -1,15 +1,15 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useState, useSyncExternalStore, type ReactNode } from "react";
 import {
   Area,
   AreaChart,
   Bar,
   BarChart,
   CartesianGrid,
+  ComposedChart,
   Legend,
   Line,
-  LineChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -19,7 +19,8 @@ import {
 import { formatCompact, formatMoney } from "@/lib/finance/format";
 import { outcome, type YearRow } from "@/lib/finance/simulate";
 import { useLocale, useMessages, type Locale } from "./i18n/locale";
-import { card, muted } from "./styles";
+import { card, link, muted } from "./styles";
+import { YearTable } from "./table";
 
 const HEIGHT = 260;
 
@@ -32,6 +33,27 @@ const TOOLTIP = {
 };
 const AXIS = { stroke: "var(--muted)", fontSize: 12 };
 
+const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
+
+/** The charts draw themselves when they appear, unless the person asked the system for less motion. */
+function useAnimated(): boolean {
+  return useSyncExternalStore(
+    (notify) => {
+      const query = window.matchMedia(REDUCED_MOTION);
+      query.addEventListener("change", notify);
+      return () => query.removeEventListener("change", notify);
+    },
+    () => !window.matchMedia(REDUCED_MOTION).matches,
+    () => false,
+  );
+}
+
+/** How each series draws itself: a second, easing out, one after the other. */
+function useMotion() {
+  const animated = useAnimated();
+  return (order = 0) => ({ isAnimationActive: animated, animationDuration: 1000, animationBegin: order * 250, animationEasing: "ease-out" as const });
+}
+
 function useAxes(locale: Locale) {
   const t = useMessages();
   return {
@@ -41,59 +63,82 @@ function useAxes(locale: Locale) {
   };
 }
 
-/** A chart with its title and the one-line note on what it shows. */
-function Panel({ title, about, note, children }: { title: string; about: string; note?: ReactNode; children: ReactNode }) {
+/** A chart with its title, the one-line note on what it shows and, if any, an action in the corner. */
+function Panel({ title, about, action, note, children }: { title: string; about: string; action?: ReactNode; note?: ReactNode; children: ReactNode }) {
   return (
     <section className={`${card} p-4 sm:p-5`}>
-      <h2 className="text-base font-semibold">{title}</h2>
+      <div className="flex items-start justify-between gap-3">
+        <h2 className="text-base font-semibold">{title}</h2>
+        {action}
+      </div>
       <p className={`mt-1 mb-4 text-sm ${muted}`}>{about}</p>
-      <div style={{ height: HEIGHT }}>{children}</div>
+      {children}
       {note && <p className={`mt-3 text-sm ${muted}`}>{note}</p>}
     </section>
   );
 }
 
-/** What was put in and what it earned, stacked: the green wedge is compound interest. */
+/** What was put in and what it earned, stacked: the green wedge is compound interest. The same figures as a table on request. */
 export function GrowthChart({ rows }: { rows: YearRow[] }) {
   const t = useMessages();
   const locale = useLocale();
   const f = useAxes(locale);
+  const motion = useMotion();
+  const [view, setView] = useState<"chart" | "table">("chart");
+  const other = view === "chart" ? "table" : "chart";
   return (
-    <Panel title={t.charts.growth.title} about={t.charts.growth.about}>
-      <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={rows} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
-          <CartesianGrid stroke="var(--chart-grid)" vertical={false} />
-          <XAxis dataKey="year" {...AXIS} tickLine={false} />
-          <YAxis {...AXIS} tickLine={false} axisLine={false} tickFormatter={f.compact} width={56} />
-          <Tooltip {...TOOLTIP} formatter={(value) => f.money(Number(value))} labelFormatter={(year) => f.year(Number(year))} />
-          <Legend iconType="square" />
-          <Area type="monotone" dataKey="contributed" name={t.charts.growth.contributed} stackId="1" stroke="var(--chart-contributed)" fill="var(--chart-contributed)" fillOpacity={0.55} isAnimationActive={false} />
-          <Area type="monotone" dataKey="interest" name={t.charts.growth.interest} stackId="1" stroke="var(--chart-interest)" fill="var(--chart-interest)" fillOpacity={0.75} isAnimationActive={false} />
-        </AreaChart>
-      </ResponsiveContainer>
+    <Panel
+      title={t.charts.growth.title}
+      about={t.charts.growth.about}
+      action={
+        <button type="button" className={`${link} -mr-2 -mt-2 shrink-0`} onClick={() => setView(other)}>
+          {view === "chart" ? t.charts.growth.showTable : t.charts.growth.showChart}
+        </button>
+      }
+    >
+      {view === "chart" ? (
+        <div style={{ height: HEIGHT }}>
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={rows} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
+              <CartesianGrid stroke="var(--chart-grid)" vertical={false} />
+              <XAxis dataKey="year" {...AXIS} tickLine={false} />
+              <YAxis {...AXIS} tickLine={false} axisLine={false} tickFormatter={f.compact} width={56} />
+              <Tooltip {...TOOLTIP} formatter={(value) => f.money(Number(value))} labelFormatter={(year) => f.year(Number(year))} />
+              <Legend iconType="square" />
+              <Area type="monotone" dataKey="contributed" name={t.charts.growth.contributed} stackId="1" stroke="var(--chart-contributed)" strokeWidth={2} fill="var(--chart-contributed)" fillOpacity={0.25} {...motion(0)} />
+              <Area type="monotone" dataKey="interest" name={t.charts.growth.interest} stackId="1" stroke="var(--chart-interest)" strokeWidth={2} fill="var(--chart-interest)" fillOpacity={0.25} {...motion(1)} />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      ) : (
+        <YearTable rows={rows} />
+      )}
     </Panel>
   );
 }
 
-/** The balance in each year's euros against the same balance in today's, plus the cash that was never invested. */
+/** The balance against what it buys today; the shaded gap between the two lines is what inflation eats. */
 export function InflationChart({ rows }: { rows: YearRow[] }) {
   const t = useMessages();
   const locale = useLocale();
   const f = useAxes(locale);
+  const motion = useMotion();
   return (
     <Panel title={t.charts.inflation.title} about={t.charts.inflation.about}>
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={rows} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
-          <CartesianGrid stroke="var(--chart-grid)" vertical={false} />
-          <XAxis dataKey="year" {...AXIS} tickLine={false} />
-          <YAxis {...AXIS} tickLine={false} axisLine={false} tickFormatter={f.compact} width={56} />
-          <Tooltip {...TOOLTIP} formatter={(value) => f.money(Number(value))} labelFormatter={(year) => f.year(Number(year))} />
-          <Legend iconType="plainline" />
-          <Line type="monotone" dataKey="balance" name={t.charts.inflation.nominal} stroke="var(--chart-interest)" strokeWidth={2.5} dot={false} isAnimationActive={false} />
-          <Line type="monotone" dataKey="real" name={t.charts.inflation.real} stroke="var(--chart-real)" strokeWidth={2.5} dot={false} isAnimationActive={false} />
-          <Line type="monotone" dataKey="cashReal" name={t.charts.inflation.cash} stroke="var(--chart-cash)" strokeWidth={2} strokeDasharray="6 4" dot={false} isAnimationActive={false} />
-        </LineChart>
-      </ResponsiveContainer>
+      <div style={{ height: HEIGHT }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <ComposedChart data={rows} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
+            <CartesianGrid stroke="var(--chart-grid)" vertical={false} />
+            <XAxis dataKey="year" {...AXIS} tickLine={false} />
+            <YAxis {...AXIS} tickLine={false} axisLine={false} tickFormatter={f.compact} width={56} />
+            <Tooltip {...TOOLTIP} formatter={(value) => f.money(Number(value))} labelFormatter={(year) => f.year(Number(year))} />
+            <Legend iconType="plainline" itemSorter="dataKey" />
+            <Area type="monotone" dataKey={(row: YearRow) => [row.real, row.balance]} name={t.charts.inflation.gap} stroke="none" fill="var(--chart-real)" fillOpacity={0.12} legendType="none" tooltipType="none" {...motion(2)} />
+            <Line type="monotone" dataKey="balance" name={t.charts.inflation.nominal} stroke="var(--chart-interest)" strokeWidth={2.5} dot={false} {...motion(0)} />
+            <Line type="monotone" dataKey="real" name={t.charts.inflation.real} stroke="var(--chart-real)" strokeWidth={2.5} dot={false} {...motion(1)} />
+          </ComposedChart>
+        </ResponsiveContainer>
+      </div>
     </Panel>
   );
 }
@@ -103,6 +148,7 @@ export function OutcomeChart({ rows }: { rows: YearRow[] }) {
   const t = useMessages();
   const locale = useLocale();
   const f = useAxes(locale);
+  const motion = useMotion();
   const last = outcome(rows);
   const bars = [
     { name: t.charts.outcome.contributed, value: last.contributed, fill: "var(--chart-contributed)" },
@@ -123,15 +169,17 @@ export function OutcomeChart({ rows }: { rows: YearRow[] }) {
         </>
       }
     >
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={bars} margin={{ top: 8, right: 8, bottom: 0, left: 0 }} barCategoryGap="25%">
-          <CartesianGrid stroke="var(--chart-grid)" vertical={false} />
-          <XAxis dataKey="name" {...AXIS} tickLine={false} interval={0} />
-          <YAxis {...AXIS} tickLine={false} axisLine={false} tickFormatter={f.compact} width={56} />
-          <Tooltip {...TOOLTIP} cursor={{ fill: "var(--raised)" }} formatter={(value) => f.money(Number(value))} />
-          <Bar dataKey="value" radius={[6, 6, 0, 0]} isAnimationActive={false} />
-        </BarChart>
-      </ResponsiveContainer>
+      <div style={{ height: HEIGHT }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={bars} margin={{ top: 8, right: 8, bottom: 0, left: 0 }} barCategoryGap="25%">
+            <CartesianGrid stroke="var(--chart-grid)" vertical={false} />
+            <XAxis dataKey="name" {...AXIS} tickLine={false} interval={0} />
+            <YAxis {...AXIS} tickLine={false} axisLine={false} tickFormatter={f.compact} width={56} />
+            <Tooltip {...TOOLTIP} cursor={{ fill: "var(--raised)" }} formatter={(value) => f.money(Number(value))} />
+            <Bar dataKey="value" radius={[6, 6, 0, 0]} {...motion(0)} />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </Panel>
   );
 }

@@ -6,7 +6,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Investment Calculator",
   description:
-    "See how an investment grows with compound interest, what inflation takes from it and when it reaches a goal. Runs entirely in your browser.",
+    "See how an investment grows with compound interest and what inflation takes from it. Runs entirely in your browser.",
 };
 
 /** `viewport-fit=cover` so iPhones paint under the notch; the margins come from `safe-area`. */

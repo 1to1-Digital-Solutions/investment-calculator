@@ -3,9 +3,9 @@
 import { formatMoney, toCsv } from "@/lib/finance/format";
 import type { YearRow } from "@/lib/finance/simulate";
 import { useLocale, useMessages } from "./i18n/locale";
-import { button, card, muted } from "./styles";
+import { button, muted } from "./styles";
 
-/** The yearly figures as a table, folded away, with the same figures as a CSV for a spreadsheet. */
+/** The yearly figures as a table, with the same figures as a CSV for a spreadsheet. */
 export function YearTable({ rows }: { rows: YearRow[] }) {
   const t = useMessages();
   const locale = useLocale();
@@ -23,13 +23,10 @@ export function YearTable({ rows }: { rows: YearRow[] }) {
   }
 
   return (
-    <details className={`${card} px-4 py-2 sm:px-5`}>
-      <summary className="min-h-11 font-semibold leading-11 pointer-fine:min-h-0 pointer-fine:leading-normal pointer-fine:py-2">
-        {t.table.summary}
-      </summary>
-      <div className="-mx-4 overflow-x-auto px-4 sm:-mx-5 sm:px-5">
-        <table className="my-3 w-full min-w-[32rem] text-sm tabular-nums">
-          <thead>
+    <div className="flex flex-col gap-3">
+      <div className="-mx-4 max-h-96 overflow-auto px-4 sm:-mx-5 sm:px-5">
+        <table className="w-full min-w-[32rem] text-sm tabular-nums">
+          <thead className="sticky top-0 bg-surface">
             <tr className={`border-b border-border text-left ${muted}`}>
               {columns.map((column, index) => (
                 <th key={column} scope="col" className={`py-2 font-medium ${index > 0 ? "text-right" : ""}`}>
@@ -53,11 +50,11 @@ export function YearTable({ rows }: { rows: YearRow[] }) {
           </tbody>
         </table>
       </div>
-      <div className="pb-2">
+      <div>
         <button type="button" className={button} onClick={download}>
           {t.table.download}
         </button>
       </div>
-    </details>
+    </div>
   );
 }

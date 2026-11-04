@@ -4,9 +4,10 @@
 
 ## Qué es y dónde está
 
-- Calculadora de inversión: capital inicial, aportación mensual, rentabilidad e inflación; modo
-  «¿cuánto tendré?» (años) o «¿cuándo llego a X?» (objetivo). Tres gráficos (crecimiento, frente a
-  la inflación, resultado real), tabla anual con CSV, enlace compartible, ES/EN, claro/oscuro.
+- Calculadora de inversión: capital inicial, aportación mensual, rentabilidad, inflación y años;
+  al pulsar «Calcular» aparecen debajo del formulario, animados, el resumen y tres gráficos
+  (crecimiento con tabla año a año dentro y CSV, frente a la inflación, resultado real). Enlace
+  compartible, ES/EN, claro/oscuro.
 - **Repo privado:** https://github.com/1to1-Digital-Solutions/investment-calculator
 - **Producción:** https://inversion-calculadora.vercel.app (proyecto `investment-calculator` del equipo
   `1to1-digital-solutions`; `investment-calculator.vercel.app` y `calculadora-inversion.vercel.app` los
@@ -18,12 +19,15 @@
 
 ## ⏭️ Siguiente paso
 
-Terminada la primera versión. Pendiente de comprobar a mano en el móvil (deslizador de años,
-teclado numérico en los campos, tooltips de los gráficos al tocar).
+Segunda vuelta (simplificación pedida por César el 4/11/2026) hecha y verificada en local
+(escritorio y móvil, claro y oscuro): sin modo objetivo, formulario arriba y resultados al pulsar
+«Calcular», tabla dentro de «Crecimiento», inflación en dos líneas con la brecha sombreada,
+relleno translúcido. **Sin commitear ni publicar**: falta su visto bueno.
 
-Ideas que quedaron fuera a propósito (v1 simple): comisiones anuales, impuestos sobre la
-ganancia, aportación que crece cada año, escenarios predefinidos. Si alguna entra, va en
-`lib/finance/` con su test y en el formulario como opción plegada.
+Ideas que quedaron fuera a propósito (v1 simple): modo «¿cuándo llego a X?» (se quitó en la
+segunda vuelta), comisiones anuales, impuestos sobre la ganancia, aportación que crece cada año,
+escenarios predefinidos. Si alguna entra, va en `lib/finance/` con su test y en el formulario
+como opción plegada.
 
 ## ▶️ Cómo arrancar
 
@@ -56,8 +60,14 @@ con un script suelto (viewport iPhone 13, claro y oscuro).
 - **Ganancia real** = saldo en dinero de hoy − cada aportación deflactada desde su mes. Comparar
   contra el aportado nominal daba «pérdida real» con un 2 % de rentabilidad real: contaba un euro
   del año 19 como un euro de hoy.
-- **El escenario vive en la URL** (`useSyncExternalStore`, `replaceState`), no en estado de React:
-  así el enlace siempre es el escenario y no hay desajuste de hidratación.
+- **El escenario calculado vive en la URL** (`useSyncExternalStore`, `replaceState`); el
+  formulario guarda las ediciones aparte hasta «Calcular». Así el enlace siempre es lo que hay en
+  pantalla, no hay desajuste de hidratación y un enlace compartido abre ya con los resultados.
+- **Los gráficos se dibujan al aparecer** (Recharts anima cada serie, escalonadas, y cada bloque
+  sube con `animate-rise`); cada «Calcular» remonta los resultados para repetirlo. Con
+  `prefers-reduced-motion`, nada se mueve.
+- **La leyenda de Recharts ordena por nombre** por defecto; en «Frente a la inflación» va
+  `itemSorter="dataKey"` para que «Saldo» salga primero, como en el texto.
 - **Los campos numéricos** guardan el texto mientras se escribe y el número aparte: un
   `<input type="number">` controlado no deja borrar para reescribir.
 - **Comisiones e impuestos fuera** a petición de César: la herramienta enseña el mecanismo de

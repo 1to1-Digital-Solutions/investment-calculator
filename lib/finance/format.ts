@@ -31,11 +31,6 @@ export function formatCompact(value: number, locale: NumberLocale): string {
   }).format(value);
 }
 
-/** Months as years and months: 30 → { years: 2, months: 6 }. */
-export function splitMonths(total: number): { years: number; months: number } {
-  return { years: Math.floor(total / 12), months: total % 12 };
-}
-
 /** CSV of the yearly rows, with a header, for a spreadsheet. */
 export function toCsv(header: readonly string[], rows: readonly (readonly number[])[]): string {
   const line = (cells: readonly (string | number)[]) =>

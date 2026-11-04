@@ -1,26 +1,25 @@
 # Investment Calculator
 
-See how an investment grows with compound interest, what inflation takes from it and when it
-reaches a goal. Initial capital, a monthly contribution and an annual return in; three charts and
-a yearly table out.
+See how an investment grows with compound interest and what inflation takes from it. Initial
+capital, a monthly contribution and an annual return in; press *Calculate* and three charts draw
+themselves below the form.
 
 Everything runs in the browser. There is no server, no database and no analytics: the numbers
 never leave the page, and a scenario can be shared because it lives in the URL.
 
 ## What it does
 
-- **Two questions.** *How much will I have?* with a years slider, or *When do I reach a goal?*
-  with a target amount: the tool finds the month the balance first gets there, or says why it
-  never will.
+- **The form first, the results on demand.** Nothing moves while a number is half typed: the
+  charts appear, one after the other, when *Calculate* is pressed, and again on *Recalculate*.
 - **Growth**: what was put in and what the investment earned, stacked by year. The green wedge
-  that widens every year is compound interest.
-- **Against inflation**: the balance in the euros of each year, the same balance in today's
-  money, and what the money would be worth had it stayed as cash.
+  that widens every year is compound interest. The same figures as a year-by-year table, with a
+  switch inside the chart, downloadable as CSV.
+- **Against inflation**: the balance of each year and what that balance buys today; the shaded
+  gap between the two lines is what inflation eats.
 - **Real result**: at the end, what was put in, what there is and what it buys today, with the
   purchasing power lost to inflation and the real gain (or loss) spelled out.
 - **Inflation with a date.** The default is the latest annual CPI of Spain published when the
   tool was written (INE, October 2026); it is shown with that date and can be changed.
-- **Year by year** as a folded table, downloadable as CSV.
 - **Share a scenario**: the parameters are in the URL, so copying the link copies the plan.
 - **English or Spanish interface** and **light or dark theme**, following the browser until you
   pick one. Both choices are remembered.
@@ -50,8 +49,7 @@ pnpm dev       # http://127.0.0.1:3500
 | `pnpm test` / `coverage` | Vitest; `lib/` is required to stay at 100 % coverage |
 
 The maths live in `lib/finance/` and are pure and fully tested: `simulate.ts` (the yearly rows),
-`goal.ts` (months to a target), `params.ts` (defaults, bounds and the URL shape) and `format.ts`
-(money, percentages, CSV). `app/` is the wrapper: the form, the three charts (Recharts), the
+`params.ts` (defaults, bounds and the URL shape) and `format.ts` (money, percentages, CSV). `app/` is the wrapper: the form, the three charts (Recharts), the
 table and the URL sync; the interface texts live in `app/_ui/i18n/`.
 
 Built with Next.js 16, React 19, TypeScript, Tailwind CSS 4, Recharts and Vitest. Deployed on
