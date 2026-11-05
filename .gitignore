@@ -20,5 +20,7 @@ coverage/
 # System
 .DS_Store
 
-# Organízate's install state
+# Local context for agents (handoff and suite rules): never published
+ESTADO.md
+.claude/
 .organizate/

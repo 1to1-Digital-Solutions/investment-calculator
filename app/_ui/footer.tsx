@@ -9,7 +9,7 @@ import { muted } from "./styles";
 const COMPANY_URL = "https://1to1digital.solutions/";
 
 const LINKS = [
-  { name: "GitHub", href: "https://github.com/cpl121" },
+  { name: "GitHub", href: "https://github.com/1to1-Digital-Solutions/investment-calculator" },
   { name: "LinkedIn", href: "https://www.linkedin.com/in/c%C3%A9sar-pe%C3%B3n-lamparero/" },
 ] as const;
 

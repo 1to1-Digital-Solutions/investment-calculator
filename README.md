@@ -7,12 +7,14 @@ themselves below the form.
 Everything runs in the browser. There is no server, no database and no analytics: the numbers
 never leave the page, and a scenario can be shared because it lives in the URL.
 
+Live at https://inversion-calculadora.vercel.app.
+
 ## What it does
 
 - **The form first, the results on demand.** Nothing moves while a number is half typed: the
   charts appear, one after the other, when *Calculate* is pressed, and again on *Recalculate*.
-- **The years follow a slider pinned to the bottom** once there are results: move it from
-  anywhere on the page and every chart redraws at once.
+- **The years follow a floating slider** over the bottom of the screen once there are results:
+  move it from anywhere on the page and every chart redraws at once.
 - **Growth**: what was put in and what the investment earned, stacked by year. The green wedge
   that widens every year is compound interest. The same figures as a year-by-year table, with a
   switch inside the chart, downloadable as CSV.
@@ -58,3 +60,8 @@ table and the URL sync; the interface texts live in `app/_ui/i18n/`.
 
 Built with Next.js 16, React 19, TypeScript, Tailwind CSS 4, Recharts and Vitest. Deployed on
 Vercel.
+
+## License
+
+[MIT](LICENSE). The numbers are a simplified projection, not financial advice: see the legal
+notice in the app.

@@ -3,7 +3,7 @@
 **What it is:** a single-page calculator of compound interest against inflation. Initial capital,
 monthly contribution, annual return and years in; on "Calculate", a summary and three charts
 (growth, with a year-by-year table inside; against inflation; the difference investing makes) draw themselves below
-the form, and a years slider pinned to the bottom moves them live. `/legal` is the legal notice.
+the form, and a floating years slider at the bottom moves them live. `/legal` is the legal notice.
 See `README.md` for the feature list and how the numbers are made.
 
 **Local context:** `ESTADO.md` carries the current state, what is pending and the operational
